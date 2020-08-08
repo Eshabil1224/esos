@@ -1,0 +1,50 @@
+const Discord = require('discord.js');
+const db = require('quick.db')
+const a = require('../ayarlar.json')
+
+exports.run = async (client, message,args) => {
+let kanalkorumadb = await db.fetch(`kanalkoruma${message.guild.id}`)
+
+
+const cfxkoruma = new Discord.RichEmbed()
+.setColor("#00ff88")
+.setTitle(`**\`Kanal Koruma Bilgi;\`**`)
+.setDescription(`** ** \n**Açmak İçin:** \`${a.prefix}\`kanalkoruma aç\n\n **Kapatmak İçin:** \`${a.prefix}kanalkoruma kapat\``)
+.setFooter(`Leviathan Kanal Koruma Sistemi.`, client.user.avatarURL)
+
+  if(message.author.id !== message.guild.owner.user.id) return message.channel.send('Yeterli Yetkiye Sahip Görünmüyorsun! ') 
+if (!args[0]) return message.channel.send(cfxkoruma);
+if (args[0] == 'aç') {
+if (kanalkorumadb === 'Açık') {
+message.channel.send('Kanal Koruması Zaten Aktif!')
+return;
+} 
+else {
+    db.set(`kanalkoruma${message.guild.id}`, 'Açık')
+     message.channel.send('Kanal Koruması başarıyla açıldı!')
+}
+  }
+  else if (args[0] == 'kapat') {
+    db.delete(`kanalkoruma${message.guild.id}`, 'Kapalı')
+      message.channel.send('Kanal Koruması başarıyla kapatıldı!')
+  }
+
+
+}
+
+module.exports.conf = {
+  enabled: true,
+  guildOnly: false,
+  aliases: [],
+  permLevel: 0
+};
+
+module.exports.help = {
+  name: 'kanalkoruma',
+  description: 'CODEFENIX KOD PAYLASIM',
+  usage: 'kanalkoruma'
+};
+
+
+
+// BU KOD CFX KOD PAYLASIM TARAFINDAN YAZILMISTIR IZINSIZ PAYLASILMASI YASAKTIR ILETISIM: support@codefenix.dx.am // CFX IYI GUNLER DILER //
